@@ -34,10 +34,6 @@ public class Dimensao {
 	@Column(name = "peso")
 	private Long peso;
 	
-	@ManyToOne
-	@JoinColumn(name = "id_avaliacao")
-	private Avaliacao avaliacao ;
-	
 	@Column(name = "tipo")
 	@Enumerated(value = EnumType.STRING)
 	private TipoAvaliacao tipo;
