@@ -2,6 +2,7 @@ package com.projetofinal.avaliaProjeto.service.impl;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -80,6 +81,11 @@ public class ProjetoServiceImpl implements ProjetoService {
 			throw new RegraNegocioException("Informe um Aluno.");
 		}
 		
+	}
+
+	@Override
+	public Optional<Projeto> obterPorId(Long id) {
+		return repository.findById(id);
 	}
 
 }
