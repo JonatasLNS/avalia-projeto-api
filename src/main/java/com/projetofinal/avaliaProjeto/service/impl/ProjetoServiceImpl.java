@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.ExampleMatcher.StringMatcher;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.projetofinal.avaliaProjeto.exception.RegraNegocioException;
 import com.projetofinal.avaliaProjeto.model.entity.Projeto;
 import com.projetofinal.avaliaProjeto.model.repository.ProjetoRepository;
+import com.projetofinal.avaliaProjeto.model.repository.UsuarioRepository;
 import com.projetofinal.avaliaProjeto.service.ProjetoService;
 
 @Service
@@ -20,7 +22,9 @@ public class ProjetoServiceImpl implements ProjetoService {
 	
 	private ProjetoRepository repository;
 	
+	@Autowired
 	public ProjetoServiceImpl(ProjetoRepository repository) {
+		super();
 		this.repository = repository;
 	}
 
@@ -55,7 +59,7 @@ public class ProjetoServiceImpl implements ProjetoService {
 				.withIgnoreCase()
 				.withStringMatcher(StringMatcher.CONTAINING));
 		
-		return repository.findAll();
+		return repository.findAll(example);
 	}
 	
 	public void validar(Projeto projeto) {

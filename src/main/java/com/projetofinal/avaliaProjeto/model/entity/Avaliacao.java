@@ -18,13 +18,17 @@ import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
 import com.projetofinal.avaliaProjeto.model.enums.StatusAvaliacao;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table( name = "avaliacao", schema = "avalia")
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Avaliacao {
 	
 	@Id

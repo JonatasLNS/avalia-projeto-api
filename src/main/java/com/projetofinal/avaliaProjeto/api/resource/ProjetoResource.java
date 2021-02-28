@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -54,7 +55,7 @@ public class ProjetoResource {
 	
 	@PutMapping("{id}")
 	public ResponseEntity atualizar( @PathVariable("id") Long id, @RequestBody ProjetoDTO dto) {
-		return service.obterPorId(dto.getId()).map( entity -> {
+		return service.obterPorId(id).map( entity -> {
 			try {
 				Projeto projeto = converter(dto);
 				projeto.setId(entity.getId());
@@ -76,6 +77,7 @@ public class ProjetoResource {
 			new  ResponseEntity("Projeto não encontrado na basa de dados.",HttpStatus.BAD_REQUEST));
 	}
 	
+	@GetMapping
 	public ResponseEntity  buscar(
 			@RequestParam(value ="ano", required = false) Integer ano,
 			@RequestParam(value ="semestre", required = false) Integer semestre,
@@ -92,11 +94,15 @@ public class ProjetoResource {
 		projetoFiltro.setSemestre(semestre);
 		projetoFiltro.setTema(tema);
 		
-		Optional<Professor> professor = professorService.obterPorId(idProfessorOrientador);
-		if(professor.isPresent()) {
-			return ResponseEntity.badRequest().body("Não foi possivel realizar a consulta. Projeto não encontrado.");
-		}else {
-			projetoFiltro.setOrientador(professor.get());
+		if(idProfessorOrientador != null) {
+			Optional<Professor> professor = professorService.obterPorId(idProfessorOrientador);
+
+			if(!professor.isPresent()) {
+				return ResponseEntity.badRequest().body("Não foi possivel realizar a consulta. Projeto não encontrado.");
+			}else {
+				projetoFiltro.setOrientador(professor.get());
+			}
+			
 		}
 		
 		List<Projeto> projetos = service.buscar(projetoFiltro);

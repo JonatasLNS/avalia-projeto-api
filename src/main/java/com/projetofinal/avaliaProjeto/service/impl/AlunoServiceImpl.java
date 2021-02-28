@@ -2,6 +2,7 @@ package com.projetofinal.avaliaProjeto.service.impl;
 
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.projetofinal.avaliaProjeto.model.entity.Aluno;
@@ -15,6 +16,12 @@ import com.projetofinal.avaliaProjeto.service.ProfessorService;
 public class AlunoServiceImpl implements AlunoService {
 	
 	private AlunoRepository repository;
+	
+	@Autowired
+	public AlunoServiceImpl(AlunoRepository repository) {
+		super();
+		this.repository = repository;
+	}
 
 	@Override
 	public Aluno salvarAluno(Aluno professor) {

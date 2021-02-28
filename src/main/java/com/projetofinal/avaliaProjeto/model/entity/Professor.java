@@ -1,5 +1,6 @@
 package com.projetofinal.avaliaProjeto.model.entity;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -12,13 +13,17 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table( name = "professor", schema = "avalia")
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Professor {
 
 	@Id

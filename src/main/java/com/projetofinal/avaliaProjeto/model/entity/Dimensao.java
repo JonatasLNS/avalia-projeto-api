@@ -1,5 +1,7 @@
 package com.projetofinal.avaliaProjeto.model.entity;
 
+import java.time.LocalDate;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,14 +15,18 @@ import javax.persistence.Table;
 
 import com.projetofinal.avaliaProjeto.model.enums.TipoAvaliacao;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Entity
 @Table( name = "dimensao", schema = "avalia")
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Dimensao {
 	
 	@Id
