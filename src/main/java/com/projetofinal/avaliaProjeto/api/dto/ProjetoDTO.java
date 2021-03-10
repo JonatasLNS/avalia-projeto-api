@@ -7,12 +7,18 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProjetoDTO {
 	
 	private Long id;
 	private Integer ano;
 	private Integer semestre;
 	private String tema;
-	private Long professorOrientador;
-	private Long aluno; 
+	private Long alunoId; 
+	private Long alunoNome; 
+	private Long professorId; 
+	private String professorNome; 
+	private String situacao; 
+	private Long nota; 
 }

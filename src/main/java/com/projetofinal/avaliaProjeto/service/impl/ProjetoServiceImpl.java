@@ -77,10 +77,6 @@ public class ProjetoServiceImpl implements ProjetoService {
 			throw new RegraNegocioException("Informe um Tema válido.");
 		}
 		
-		if(projeto.getOrientador() == null || projeto.getOrientador().getId() == null) {
-			throw new RegraNegocioException("Informe um Professor Orientador.");
-		}
-		
 		if(projeto.getAluno() == null || projeto.getAluno().getId() == null) {
 			throw new RegraNegocioException("Informe um Aluno.");
 		}

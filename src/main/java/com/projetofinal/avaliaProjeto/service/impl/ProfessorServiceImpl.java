@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.projetofinal.avaliaProjeto.model.entity.Professor;
 import com.projetofinal.avaliaProjeto.model.repository.ProfessorRepository;
-import com.projetofinal.avaliaProjeto.model.repository.ProjetoRepository;
 import com.projetofinal.avaliaProjeto.service.ProfessorService;
 
 @Service

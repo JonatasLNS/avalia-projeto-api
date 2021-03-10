@@ -52,8 +52,8 @@ public class Avaliacao {
 	private Projeto projeto;
 	
 	@ManyToOne
-	@JoinColumn(name = "id_prof_avaliador")
-	private Professor avaliador ;
+	@JoinColumn(name = "id_professor")
+	private Professor professor ;
 	
 	@Column(name = "status")
 	@Enumerated(value = EnumType.STRING)
