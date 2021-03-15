@@ -34,5 +34,8 @@ public class Aluno {
 	
 	@Column(name = "curso")
 	private String curso;
+
+	@Column(name = "matricula")
+	private Long matricula;
 	
 }
