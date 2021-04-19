@@ -1,6 +1,7 @@
 package com.projetofinal.avaliaProjeto.api.resource;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -82,6 +83,7 @@ public class ProjetoResource {
 		//todos são obrigatórios
 		
 		Projeto projetoFiltro = new Projeto();
+		projetoFiltro.setId(id);
 		projetoFiltro.setAno(ano);
 		projetoFiltro.setSemestre(semestre);
 		projetoFiltro.setTema(tema);
@@ -106,6 +108,13 @@ public class ProjetoResource {
 			projeto.setAluno(aluno);
 			
 			return projeto;
+	}
+	
+	@GetMapping(path = {"/{id}"})
+	public ResponseEntity obterProjetoById(@PathVariable long id) {
+		Optional<Projeto> avaliacoes = service.obterPorId(id);
+		
+		return ResponseEntity.ok(avaliacoes);
 	}
 	
 }
