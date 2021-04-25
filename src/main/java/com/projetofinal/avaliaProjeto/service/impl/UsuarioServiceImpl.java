@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.projetofinal.avaliaProjeto.exception.ErroAutenticacao;
 import com.projetofinal.avaliaProjeto.exception.RegraNegocioException;
+import com.projetofinal.avaliaProjeto.model.entity.Aluno;
 import com.projetofinal.avaliaProjeto.model.entity.Usuario;
 import com.projetofinal.avaliaProjeto.model.repository.UsuarioRepository;
 import com.projetofinal.avaliaProjeto.service.UsuarioService;
@@ -54,6 +55,11 @@ public class UsuarioServiceImpl implements UsuarioService {
 			throw new RegraNegocioException("Já existe um usuário cadastrado com este e-mail.");
 		}
 		
+	}
+
+	@Override
+	public Optional<Usuario> obterPorNome(String nome) {
+		return repository.findByNome(nome);
 	}
 
 }

@@ -2,6 +2,8 @@ package com.projetofinal.avaliaProjeto.service.impl;
 
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,13 +33,13 @@ public class AlunoServiceImpl implements AlunoService {
 	}
 
 	@Override
+	@Transactional
 	public Optional<Aluno> obterPorId(Long id) {
 		return repository.findById(id);
 	}
 
 	@Override
 	public Optional<Aluno> obterPorMatricula(Long matricula) {
-		
 		return repository.findByMatricula(matricula);
 	}
 

@@ -1,5 +1,7 @@
 package com.projetofinal.avaliaProjeto.service;
 
+import java.util.Optional;
+
 import com.projetofinal.avaliaProjeto.model.entity.Usuario;
 
 public interface UsuarioService {
@@ -9,5 +11,7 @@ public interface UsuarioService {
 	Usuario salvarUsuario(Usuario usuario);
 	
 	void validarEmail(String email);
+	
+	public Optional<Usuario> obterPorNome(String nome);
 
 }
