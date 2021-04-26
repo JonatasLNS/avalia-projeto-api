@@ -1,7 +1,5 @@
 package com.projetofinal.avaliaProjeto.api.dto;
 
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,14 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProjetoDTO {
+public class ProfessorDTO {
 	
 	private Long id;
-	private String tema;
-	private String curso;
-	private List<ProfessorDTO> listaProfessores; 
-	private Long idAluno; 
-	private String nomeAluno; 
-	private String semestre;
-
+	private String especialidade;
+	private UsuarioDTO usuario;
 }

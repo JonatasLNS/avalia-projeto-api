@@ -1,15 +1,16 @@
 package com.projetofinal.avaliaProjeto.api.resource;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.projetofinal.avaliaProjeto.api.dto.AvaliacaoDTO;
 import com.projetofinal.avaliaProjeto.model.entity.Avaliacao;
 import com.projetofinal.avaliaProjeto.service.AvaliacaoService;
 
@@ -28,5 +29,20 @@ public class AvaliacaoResource {
 		
 		return ResponseEntity.ok(avaliacoes);
 	}
+	
+	/*@PostMapping
+	public ResponseEntity salvar(@RequestBody AvaliacaoDTO dto) {
+		Avaliacao avaliacao = Avaliacao.builder()
+															.nome(dto.getNome())
+															 .email(dto.getEmail())
+															 .senha(dto.getSenha()).build();
+		
+		try {
+			Avaliacao avaliacaoSalva = service.salvarUsuario(usuario);
+			return new ResponseEntity(usuarioSalvo, HttpStatus.CREATED);
+		} catch (RegraNegocioException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}*/
 
 }

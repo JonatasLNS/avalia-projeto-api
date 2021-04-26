@@ -26,4 +26,9 @@ private AvaliacaoRepository repository;
 		return repository.findByProfessor_Id(id);
 	}
 
+	@Override
+	public List<Avaliacao> salvarAvaliacoes(List<Avaliacao> avaliacoes) {
+		return repository.saveAll(avaliacoes);
+	}
+
 }

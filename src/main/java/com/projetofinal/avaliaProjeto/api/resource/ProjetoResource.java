@@ -1,5 +1,6 @@
 package com.projetofinal.avaliaProjeto.api.resource;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,14 +16,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.projetofinal.avaliaProjeto.api.dto.ProfessorDTO;
 import com.projetofinal.avaliaProjeto.api.dto.ProjetoDTO;
 import com.projetofinal.avaliaProjeto.exception.RegraNegocioException;
 import com.projetofinal.avaliaProjeto.model.entity.Aluno;
+import com.projetofinal.avaliaProjeto.model.entity.Avaliacao;
+import com.projetofinal.avaliaProjeto.model.entity.Professor;
 import com.projetofinal.avaliaProjeto.model.entity.Projeto;
+import com.projetofinal.avaliaProjeto.model.entity.Usuario;
+import com.projetofinal.avaliaProjeto.model.enums.StatusAvaliacao;
 import com.projetofinal.avaliaProjeto.service.AlunoService;
+import com.projetofinal.avaliaProjeto.service.AvaliacaoService;
 import com.projetofinal.avaliaProjeto.service.ProfessorService;
 import com.projetofinal.avaliaProjeto.service.ProjetoService;
 
+import javassist.expr.NewArray;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -33,13 +41,46 @@ public class ProjetoResource {
 	private final ProjetoService  service;
 	private final  ProfessorService  professorService;
 	private final AlunoService alunoService;
+	private final AvaliacaoService avaliacaoService;
 	
 	@PostMapping
 	public ResponseEntity salvar(@RequestBody ProjetoDTO dto) {
 		try {
-			Projeto entidade = converter(dto);
-			entidade = service.salvar(entidade);
-			return new ResponseEntity(entidade, HttpStatus.CREATED);
+			Aluno aluno = alunoService.obterPorId(dto.getIdAluno()).get();
+			
+			String semestreString= dto.getSemestre();
+	        String[] result = semestreString.split("\\.");
+	        Integer ano = Integer.parseInt(result[0]);
+	        Integer semestre = Integer.parseInt(result[1]);
+			
+			Projeto entidade = Projeto.builder()
+															.aluno(aluno)
+															.ano(ano)
+															.semestre(semestre)
+															.tema(dto.getTema()).build();
+			try {
+				Projeto projetoSalvo = service.salvar(entidade);
+				
+				List<ProfessorDTO> listaProfessoresDTO = dto.getListaProfessores();
+				List<Avaliacao> avaliacoes = new ArrayList<Avaliacao>();
+				for (ProfessorDTO professorDTO : listaProfessoresDTO) {
+					Professor professor = professorService.obterPorId(professorDTO.getId()).get();
+					
+					Avaliacao avaliacao = Avaliacao.builder()
+																.projeto(projetoSalvo)
+																.professor(professor)
+																.status(StatusAvaliacao.PENDENTE).build();
+					
+					avaliacoes.add(avaliacao);
+				}
+				
+				List<Avaliacao> avaliacoesSalvas = avaliacaoService.salvarAvaliacoes(avaliacoes);
+				
+				return new ResponseEntity(avaliacoesSalvas, HttpStatus.CREATED);
+			} catch (RegraNegocioException e) {
+				return ResponseEntity.badRequest().body(e.getMessage());
+			}
+			
 		} catch (RegraNegocioException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
@@ -50,10 +91,11 @@ public class ProjetoResource {
 	public ResponseEntity atualizar( @PathVariable("id") Long id, @RequestBody ProjetoDTO dto) {
 		return service.obterPorId(id).map( entity -> {
 			try {
-				Projeto projeto = converter(dto);
-				projeto.setId(entity.getId());
-				service.atualizar(projeto);
-				return ResponseEntity.ok(projeto);
+				/*
+				 * Projeto projeto = converter(dto); projeto.setId(entity.getId());
+				 * service.atualizar(projeto);
+				 */
+				return ResponseEntity.ok(new Projeto());
 			} catch (RegraNegocioException e) {
 				return ResponseEntity.badRequest().body(e.getMessage());
 			}
@@ -92,7 +134,7 @@ public class ProjetoResource {
 		return ResponseEntity.ok(projetos);
 	}
 	
-	private Projeto converter(ProjetoDTO dto) {
+	/*private Projeto converter(ProjetoDTO dto) {
 	
 			Projeto projeto = new Projeto();
 			
@@ -108,7 +150,7 @@ public class ProjetoResource {
 			projeto.setAluno(aluno);
 			
 			return projeto;
-	}
+	}*/
 	
 	@GetMapping(path = {"/{id}"})
 	public ResponseEntity obterProjetoById(@PathVariable long id) {
