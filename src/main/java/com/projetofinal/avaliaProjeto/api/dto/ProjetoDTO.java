@@ -20,5 +20,6 @@ public class ProjetoDTO {
 	private Long idAluno; 
 	private String nomeAluno; 
 	private String semestre;
+	private Long idUsuarioOrientador; 
 
 }

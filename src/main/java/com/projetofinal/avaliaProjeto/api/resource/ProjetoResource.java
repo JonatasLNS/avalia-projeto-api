@@ -52,12 +52,15 @@ public class ProjetoResource {
 	        String[] result = semestreString.split("\\.");
 	        Integer ano = Integer.parseInt(result[0]);
 	        Integer semestre = Integer.parseInt(result[1]);
+	        
+	        Professor professorOrientador = professorService.obterPorId(dto.getListaProfessores().get(0).getId()).get();
 			
 			Projeto entidade = Projeto.builder()
 															.aluno(aluno)
 															.ano(ano)
 															.semestre(semestre)
-															.tema(dto.getTema()).build();
+															.tema(dto.getTema())
+															.professorOrientador(professorOrientador).build();
 			try {
 				Projeto projetoSalvo = service.salvar(entidade);
 				

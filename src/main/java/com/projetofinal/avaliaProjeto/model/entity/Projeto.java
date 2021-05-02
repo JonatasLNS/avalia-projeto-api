@@ -42,4 +42,8 @@ public class Projeto {
 	@JoinColumn(name = "id_aluno")
 	private Aluno aluno; 
 	
+	@OneToOne
+	@JoinColumn(name = "id_professor_orientador")
+	private Professor professorOrientador;
+	
 }
