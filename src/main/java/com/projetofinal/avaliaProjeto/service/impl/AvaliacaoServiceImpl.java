@@ -30,5 +30,4 @@ private AvaliacaoRepository repository;
 	public List<Avaliacao> salvarAvaliacoes(List<Avaliacao> avaliacoes) {
 		return repository.saveAll(avaliacoes);
 	}
-
 }

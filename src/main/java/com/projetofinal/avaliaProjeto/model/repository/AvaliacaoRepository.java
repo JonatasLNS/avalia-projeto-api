@@ -9,6 +9,6 @@ import com.projetofinal.avaliaProjeto.model.entity.Avaliacao;
 
 public interface AvaliacaoRepository extends JpaRepository<Avaliacao, Long> {
 	
-	public List<Avaliacao>  findByProfessor_Id(Long id); 
+	public List<Avaliacao>  findByProfessor_Id(Long id);
 
 }

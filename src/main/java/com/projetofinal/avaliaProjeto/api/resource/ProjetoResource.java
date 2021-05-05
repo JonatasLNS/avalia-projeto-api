@@ -29,6 +29,8 @@ import com.projetofinal.avaliaProjeto.service.AlunoService;
 import com.projetofinal.avaliaProjeto.service.AvaliacaoService;
 import com.projetofinal.avaliaProjeto.service.ProfessorService;
 import com.projetofinal.avaliaProjeto.service.ProjetoService;
+import com.projetofinal.avaliaProjeto.service.UsuarioService;
+import com.sun.xml.bind.v2.TODO;
 
 import javassist.expr.NewArray;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +44,7 @@ public class ProjetoResource {
 	private final  ProfessorService  professorService;
 	private final AlunoService alunoService;
 	private final AvaliacaoService avaliacaoService;
+	private final UsuarioService usuarioService;
 	
 	@PostMapping
 	public ResponseEntity salvar(@RequestBody ProjetoDTO dto) {
@@ -53,19 +56,21 @@ public class ProjetoResource {
 	        Integer ano = Integer.parseInt(result[0]);
 	        Integer semestre = Integer.parseInt(result[1]);
 	        
-	        Professor professorOrientador = professorService.obterPorId(dto.getListaProfessores().get(0).getId()).get();
+	        Optional<Professor> professorOrientador = professorService.obterPorUsuarioId(dto.getIdUsuarioOrientador());
 			
 			Projeto entidade = Projeto.builder()
 															.aluno(aluno)
 															.ano(ano)
 															.semestre(semestre)
 															.tema(dto.getTema())
-															.professorOrientador(professorOrientador).build();
+															.professorOrientador(professorOrientador.get()).build();
 			try {
 				Projeto projetoSalvo = service.salvar(entidade);
 				
 				List<ProfessorDTO> listaProfessoresDTO = dto.getListaProfessores();
 				List<Avaliacao> avaliacoes = new ArrayList<Avaliacao>();
+				
+				//CADASTRA AVALIAÇÕES PENDENTES PARA CADA PROFESSOR DA BANCA
 				for (ProfessorDTO professorDTO : listaProfessoresDTO) {
 					Professor professor = professorService.obterPorId(professorDTO.getId()).get();
 					
@@ -76,6 +81,14 @@ public class ProjetoResource {
 					
 					avaliacoes.add(avaliacao);
 				}
+				
+				//CADASTRA AVALIAÇÃO PENDENTE PARA O PROFESSOR ORIENTADOR
+				Avaliacao avaliacao = Avaliacao.builder()
+						.projeto(projetoSalvo)
+						.professor(professorOrientador.get())
+						.status(StatusAvaliacao.PENDENTE).build();
+
+				avaliacoes.add(avaliacao);
 				
 				List<Avaliacao> avaliacoesSalvas = avaliacaoService.salvarAvaliacoes(avaliacoes);
 				

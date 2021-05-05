@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.projetofinal.avaliaProjeto.model.entity.Professor;
+import com.projetofinal.avaliaProjeto.model.entity.Usuario;
 import com.projetofinal.avaliaProjeto.model.repository.ProfessorRepository;
 import com.projetofinal.avaliaProjeto.service.ProfessorService;
 
@@ -45,6 +46,16 @@ public class ProfessorServiceImpl implements ProfessorService {
 					.withIgnoreCase()
 					.withStringMatcher(StringMatcher.CONTAINING));
 		return repository.findAll(example);
+	}
+
+	@Override
+	public Optional<Professor> obterPorUsuarioId(Long id) {
+		return repository.findByUsuarioId(id);
+	}
+
+	@Override
+	public Optional<Professor> obterPorUsuario(Usuario usuario) {
+		return null;
 	}
 
 
