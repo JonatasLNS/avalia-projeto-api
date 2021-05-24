@@ -25,7 +25,7 @@ public class DimensaoResource {
 	private final DimensaoService  service;
 	
 	@GetMapping(path = {"/"})
-	public ResponseEntity listarByProfessorId() {
+	public ResponseEntity listarDimensoes() {
 		List<Dimensao> avaliacoes = service.obterDimensoes();
 		
 		return ResponseEntity.ok(avaliacoes);

@@ -116,7 +116,7 @@ public class ProjetoResource {
 				return ResponseEntity.badRequest().body(e.getMessage());
 			}
 		}).orElseGet( () -> 
-			new  ResponseEntity("Projeto não encontrado na basa de dados.",HttpStatus.BAD_REQUEST));
+			new  ResponseEntity("Projeto não encontrado na base de dados.",HttpStatus.BAD_REQUEST));
 	}
 
 	@DeleteMapping("{id}")
@@ -125,7 +125,7 @@ public class ProjetoResource {
 			service.deletar(entidade);
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
 		}).orElseGet( () ->
-			new  ResponseEntity("Projeto não encontrado na basa de dados.",HttpStatus.BAD_REQUEST));
+			new  ResponseEntity("Projeto não encontrado na base de dados.",HttpStatus.BAD_REQUEST));
 	}
 	
 	@GetMapping

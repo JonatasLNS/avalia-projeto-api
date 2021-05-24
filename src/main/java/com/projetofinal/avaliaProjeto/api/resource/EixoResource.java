@@ -25,12 +25,5 @@ import lombok.RequiredArgsConstructor;
 public class EixoResource {
 	
 	private final EixoService  service;
-	
-	@GetMapping(path = {"/"})
-	public ResponseEntity listarByProfessorId() {
-		List<Eixo> eixos = service.obterEixos();
-		
-		return ResponseEntity.ok(eixos);
-	}
 
 }

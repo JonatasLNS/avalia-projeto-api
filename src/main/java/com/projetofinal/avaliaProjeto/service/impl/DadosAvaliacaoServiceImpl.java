@@ -11,50 +11,48 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.projetofinal.avaliaProjeto.model.entity.Avaliacao;
+import com.projetofinal.avaliaProjeto.model.entity.DadosAvaliacao;
 import com.projetofinal.avaliaProjeto.model.entity.Professor;
 import com.projetofinal.avaliaProjeto.model.repository.AvaliacaoRepository;
+import com.projetofinal.avaliaProjeto.model.repository.DadosAvaliacaoRepository;
 import com.projetofinal.avaliaProjeto.service.AvaliacaoService;
+import com.projetofinal.avaliaProjeto.service.DadosAvaliacaoService;
 
 @Service
-public class AvaliacaoServiceImpl implements AvaliacaoService {
+public class DadosAvaliacaoServiceImpl implements DadosAvaliacaoService {
 	
-private AvaliacaoRepository repository;
+private DadosAvaliacaoRepository repository;
 	
 	@Autowired
-	public AvaliacaoServiceImpl(AvaliacaoRepository repository) {
+	public DadosAvaliacaoServiceImpl(DadosAvaliacaoRepository repository) {
 		super();
 		this.repository = repository;
 	}
 
 	@Override
-	public Optional<Avaliacao> obterPorId(Long id) {
-		return repository.findById(id);
+	public DadosAvaliacao saveDadosAvaliacao(DadosAvaliacao dadosAvaliacao) {
+		return repository.save(dadosAvaliacao);
 	}
 
 	@Override
-	public List<Avaliacao> obterPorProfessorId(Long id) {
-		return repository.findByProfessor_Id(id);
-	}
-
-	@Override
-	public List<Avaliacao> salvarAvaliacoes(List<Avaliacao> avaliacoes) {
-		return repository.saveAll(avaliacoes);
-	}
-
-	@Override
-	public Avaliacao saveAvaliacao(Avaliacao avaliacao) {
-		return repository.save(avaliacao);
+	public List<DadosAvaliacao> salvarDadosAvaliacoes(List<DadosAvaliacao> dadosAvaliacao) {
+		return repository.saveAll(dadosAvaliacao);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional(readOnly = true)
-	public List<Avaliacao> buscar(Avaliacao avaliacaoFiltro) {
-		Example example = Example.of( avaliacaoFiltro, 
+	public List<DadosAvaliacao> buscar(DadosAvaliacao dadosFiltro) {
+		Example example = Example.of( dadosFiltro, 
 				ExampleMatcher.matching()
 					.withIgnoreCase()
 					.withStringMatcher(StringMatcher.CONTAINING));
 		return repository.findAll(example);
+	}
+
+	@Override
+	public List<DadosAvaliacao> obterPorAvaliacaoId(Long id) {
+		return repository.findByAvaliacaoId(id);
 	}
 
 }

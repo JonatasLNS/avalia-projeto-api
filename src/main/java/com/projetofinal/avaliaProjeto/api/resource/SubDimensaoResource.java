@@ -25,12 +25,5 @@ import lombok.RequiredArgsConstructor;
 public class SubDimensaoResource {
 	
 	private final SubDimensaoService  service;
-	
-	@GetMapping(path = {"/"})
-	public ResponseEntity listarByProfessorId() {
-		List<SubDimensao> subdimensoes = service.obterSubDimensoes();
-		
-		return ResponseEntity.ok(subdimensoes);
-	}
 
 }

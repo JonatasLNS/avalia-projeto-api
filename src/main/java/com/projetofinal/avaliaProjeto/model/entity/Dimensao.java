@@ -29,7 +29,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Entity
 @Table( name = "dimensao", schema = "avalia")
 @Data

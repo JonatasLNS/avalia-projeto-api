@@ -1,6 +1,7 @@
 package com.projetofinal.avaliaProjeto.model.entity;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -58,5 +59,5 @@ public class Avaliacao {
 	@Column(name = "status")
 	@Enumerated(value = EnumType.STRING)
 	private StatusAvaliacao status;
-
+	
 }

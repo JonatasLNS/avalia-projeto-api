@@ -1,8 +1,5 @@
 package com.projetofinal.avaliaProjeto.api.dto;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,10 +11,11 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AvaliacaoDTO {
+public class DadosAvaliacaoDTO {
 	
-	private Long id;
-	private String Status;
-	private ArrayList<DadosAvaliacaoDTO> dadosAvaliacaoJson;
+	private Integer selectValue;
+	private String textObservacao;
+	private Boolean checkedObservacao;
+	private Long idEixo;
 	
 }
