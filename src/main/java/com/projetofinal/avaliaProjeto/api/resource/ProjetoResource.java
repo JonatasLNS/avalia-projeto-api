@@ -21,12 +21,15 @@ import com.projetofinal.avaliaProjeto.api.dto.ProjetoDTO;
 import com.projetofinal.avaliaProjeto.exception.RegraNegocioException;
 import com.projetofinal.avaliaProjeto.model.entity.Aluno;
 import com.projetofinal.avaliaProjeto.model.entity.Avaliacao;
+import com.projetofinal.avaliaProjeto.model.entity.DadosAvaliacao;
 import com.projetofinal.avaliaProjeto.model.entity.Professor;
 import com.projetofinal.avaliaProjeto.model.entity.Projeto;
 import com.projetofinal.avaliaProjeto.model.entity.Usuario;
 import com.projetofinal.avaliaProjeto.model.enums.StatusAvaliacao;
+import com.projetofinal.avaliaProjeto.model.enums.StatusProjeto;
 import com.projetofinal.avaliaProjeto.service.AlunoService;
 import com.projetofinal.avaliaProjeto.service.AvaliacaoService;
+import com.projetofinal.avaliaProjeto.service.DadosAvaliacaoService;
 import com.projetofinal.avaliaProjeto.service.ProfessorService;
 import com.projetofinal.avaliaProjeto.service.ProjetoService;
 import com.projetofinal.avaliaProjeto.service.UsuarioService;
@@ -45,6 +48,7 @@ public class ProjetoResource {
 	private final AlunoService alunoService;
 	private final AvaliacaoService avaliacaoService;
 	private final UsuarioService usuarioService;
+	private final DadosAvaliacaoService dadosAvaliacaoService;
 	
 	@PostMapping
 	public ResponseEntity salvar(@RequestBody ProjetoDTO dto) {
@@ -63,7 +67,8 @@ public class ProjetoResource {
 															.ano(ano)
 															.semestre(semestre)
 															.tema(dto.getTema())
-															.professorOrientador(professorOrientador.get()).build();
+															.professorOrientador(professorOrientador.get())
+															.status(StatusProjeto.PENDENTE).build();
 			try {
 				Projeto projetoSalvo = service.salvar(entidade);
 				
@@ -134,7 +139,8 @@ public class ProjetoResource {
 			@RequestParam(value ="ano", required = false) Integer ano,
 			@RequestParam(value ="semestre", required = false) Integer semestre,
 			@RequestParam(value ="tema", required = false) String tema,
-			@RequestParam(value ="aluno", required = false) Long idAluno) {
+			@RequestParam(value ="aluno", required = false) Long idAluno,
+			@RequestParam(value ="idProfessorOrientador", required = false) Long idProfessorOrientador) {
 		
 		//posso tbm utilizar:
 		//@RequestParam java.util.Map<String, String> params
@@ -145,6 +151,11 @@ public class ProjetoResource {
 		projetoFiltro.setAno(ano);
 		projetoFiltro.setSemestre(semestre);
 		projetoFiltro.setTema(tema);
+		
+		if(idProfessorOrientador != null) {
+			Professor professor = professorService.obterPorId(idProfessorOrientador).get();
+			projetoFiltro.setProfessorOrientador(professor);
+		}
 		
 		List<Projeto> projetos = service.buscar(projetoFiltro);
 		return ResponseEntity.ok(projetos);
@@ -170,9 +181,57 @@ public class ProjetoResource {
 	
 	@GetMapping(path = {"/{id}"})
 	public ResponseEntity obterProjetoById(@PathVariable long id) {
-		Optional<Projeto> avaliacoes = service.obterPorId(id);
+		Optional<Projeto> projetoOp = service.obterPorId(id);
 		
-		return ResponseEntity.ok(avaliacoes);
+		Projeto projeto = projetoOp.get();
+		if(projeto !=null) {
+			List<DadosAvaliacao>  dadosAvaliacao = new ArrayList<DadosAvaliacao>();
+			List<Avaliacao> avaliacoes = projeto.getAvaliacoes();
+			
+			List<DadosAvaliacao>  dados = new ArrayList<DadosAvaliacao>();
+			for (Avaliacao avaliacao : avaliacoes) {
+				
+				List<DadosAvaliacao>  dadosAv = dadosAvaliacaoService.obterPorAvaliacaoId(avaliacao.getId());
+					
+				if(!dadosAv.isEmpty()) {
+					dados.addAll(dadosAv);
+				}
+				
+			}
+			
+			double  qtdTotal = 0;
+			double  qtdTotalDeAcordo = 0;
+			double  qtdTotalNaoDeAcordo = 0;
+			double  qtdTotalParcialDeAcordo = 0;
+			
+			for (DadosAvaliacao dadosAval : dados) {
+				if(dadosAval.getValorSelect() == 1){
+					qtdTotal++;
+					qtdTotalDeAcordo++;
+                } else if (dadosAval.getValorSelect() ==  2){
+                	qtdTotal++;
+                	qtdTotalNaoDeAcordo++;
+                } else if (dadosAval.getValorSelect() ==  3){
+                	qtdTotal++;
+                	qtdTotalParcialDeAcordo++;
+                }
+			}
+			
+			double  percentualDeAcordo = arredondar((qtdTotalDeAcordo*100)/qtdTotal);
+			double  percentualNaoDeAcordo = arredondar((qtdTotalNaoDeAcordo*100)/qtdTotal);
+			double  percentualParcialDeAcordo = arredondar((qtdTotalParcialDeAcordo*100)/qtdTotal);
+						
+			projetoOp.get().setPercentualDeAcordo(percentualDeAcordo);
+			projetoOp.get().setPercentualNaoDeAcordo(percentualNaoDeAcordo);
+			projetoOp.get().setPercentualParcialDeAcordo(percentualParcialDeAcordo);
+				
+		}
+		
+		return ResponseEntity.ok(projetoOp);
+	}
+	
+	private static double arredondar(double valor) {
+		   return Math.round(valor * 100.0)/100.0;
 	}
 	
 }

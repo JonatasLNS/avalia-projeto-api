@@ -9,7 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;	
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,5 +44,6 @@ public class DadosAvaliacao {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_avaliacao", nullable = false, insertable = false, updatable = false)
 	private Avaliacao avaliacao ;
+	
 	
 }

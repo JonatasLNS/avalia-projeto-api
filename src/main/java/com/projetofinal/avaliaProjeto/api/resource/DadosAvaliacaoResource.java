@@ -36,6 +36,7 @@ import lombok.RequiredArgsConstructor;
 public class DadosAvaliacaoResource {
 	
 	private final DadosAvaliacaoService  service;
+	private final AvaliacaoService  avaliacaoService;
 	
 	@GetMapping
 	public ResponseEntity buscar(
@@ -43,7 +44,8 @@ public class DadosAvaliacaoResource {
 			) {
 		
 		List<DadosAvaliacao> dados = service.obterPorAvaliacaoId(avaliacaoId);
-		return  ResponseEntity.ok(dados);
+		return  ResponseEntity.ok(dados);			
+		
 	}
 	
 }
